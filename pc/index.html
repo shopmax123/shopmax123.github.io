@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="container is-fluid">
-      <div class="columns is-mobile">
+      <div class="columns is-desktop">
         <div class="column">
           <section class="hero is-primary">
             <div class="hero-body">
@@ -24,7 +24,7 @@
     <script>
       const API_URL = "https://script.google.com/macros/s/AKfycby1GU-P_DGzFNSOerY4VH15rk_q-F_gQ3_fOpZlFfN9bF2sJcOmAIGeg9jVe9pav9vq1w/exec"
       let html5QrCode;
-      const config = { fps: 2, qrbox: 250 }
+      const config = { fps: 20, qrbox: 250 }
 
       function qrCodeSuccessCallback(message) {
         onScanSuccess(message)
