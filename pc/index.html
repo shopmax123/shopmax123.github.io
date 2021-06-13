@@ -7,15 +7,19 @@
   </head>
   <body>
     <div class="container is-fluid">
-      <section class="hero is-primary">
-        <div class="hero-body">
-          <p class="title">
-            My QR Scanner
-          </p>
+      <div class="columns is-mobile">
+        <div class="column">
+          <section class="hero is-primary">
+            <div class="hero-body">
+              <p class="title">
+                My QR Scanner
+              </p>
+            </div>
+          </section>
+          <input class="input is-primary input-ws is-fullwidth" type="text" placeholder="Work station">
+          <div style="width: 320px; margin: 0 auto;" id="reader"></div>
         </div>
-      </section>
-      <input class="input is-primary input-ws is-fullwidth" type="text" placeholder="Work station">
-      <div style="width: 320px; margin: 0 auto;" id="reader"></div>
+      </div>
     </div>
     <script>
       const API_URL = "https://script.google.com/macros/s/AKfycby1GU-P_DGzFNSOerY4VH15rk_q-F_gQ3_fOpZlFfN9bF2sJcOmAIGeg9jVe9pav9vq1w/exec"
