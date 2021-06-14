@@ -16,9 +16,6 @@
           </div>
         </section>
       </div>
-      <!-- <div class="column">
-        <input disabled="true" class="input is-primary input-ws is-fullwidth" type="text" placeholder="Work station">
-      </div>   -->
       <div style="width: 320px; margin: 0 auto;" id="reader"></div>
       </div>
     </div>
@@ -38,7 +35,7 @@
               startScan(true)
           }
           else {
-              document.querySelector('.title').value = ws
+              document.querySelector('.title').innerText = ws
               startScan(false);
           }
         }
@@ -67,7 +64,7 @@
       function scanToConfig(message) {
         html5QrCode.stop()
         localStorage.setItem('ws', message);
-        document.querySelector('.title').value = localStorage.getItem('ws')
+        document.querySelector('.title').innerText = localStorage.getItem('ws')
         alert('Thiết lập thành công WS = ' + message)
         window.location.reload(false); 
       }
