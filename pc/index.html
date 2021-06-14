@@ -81,7 +81,34 @@
         }
         const response = fetch(API_URL, options)
           .then(response => response.json())
-          .then(data => startScan())
+          .then(data => {
+            let timerInterval
+            Swal.fire({
+              title: 'Quét thành công',
+              html: `Dữ liệu: ${qrCodeMessage}.<br>Sẵn sàng quét tiếp sau <b></b> ms.`,
+              timer: 1000,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading()
+                timerInterval = setInterval(() => {
+                  const content = Swal.getHtmlContainer()
+                  if (content) {
+                    const b = content.querySelector('b')
+                    if (b) {
+                      b.textContent = Swal.getTimerLeft()
+                    }
+                  }
+                }, 100)
+              },
+              willClose: () => {
+                clearInterval(timerInterval)
+              }
+            }).then((result) => {
+              if (result.dismiss === Swal.DismissReason.timer) {
+                startScan()
+              }
+            })
+          })
       }
 
       function scanToConfig(message) {
