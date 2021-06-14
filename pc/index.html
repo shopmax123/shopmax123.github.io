@@ -17,12 +17,31 @@
         </section>
       </div>
       <div class="column">
-        <input class="input is-primary input-ws is-fullwidth" type="text" placeholder="Work station">
-      </div>
+        <input disabled="true" class="input is-primary input-ws is-fullwidth" type="text" placeholder="Work station">
+      </div>  
       <div style="width: 320px; margin: 0 auto;" id="reader"></div>
       </div>
     </div>
     <script>
+
+      function main() {
+        let ws = null ?? localStorage.getItem('ws')
+        let question = `Tồn tại thiết lập với WS = ${ws}. Bạn có muốn thiết lập lại không?`
+
+        if(!ws) {
+          startScan(true)
+        } else {
+          // đi scan mã của Workstation để thiết lập
+          const answer = window.confirm(question);
+          if (answer) {
+              startScan(true)
+          }
+          else {
+              startScan(false);
+          }
+        }
+      }
+      
       const API_URL = "<Thay API của bạn vào đây!!!>"
       let html5QrCode;
       const config = { fps: 20, qrbox: 250 }
@@ -36,20 +55,33 @@
         const options = {
           method: 'POST',
           contentType: 'application/json',
-          body: JSON.stringify({ ws: document.querySelector('.input-ws').value, class: qrCodeMessage })
+          body: JSON.stringify({ ws: localStorage.getItem('ws'), class: qrCodeMessage })
         }
         const response = fetch(API_URL, options)
           .then(response => response.json())
           .then(data => startScan())
       }
 
-      function startScan() {
-        document.getElementById('reader').innerHTML = ''
-        html5QrCode = new Html5Qrcode('reader')
-        html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+      function scanToConfig(message) {
+        html5QrCode.stop()
+        localStorage.setItem('ws', message);
+        document.querySelector('.input-ws').value = localStorage.getItem('ws')
+        alert('Thiết lập thành công WS = ' + message)
+        window.location.reload(false); 
       }
 
-      startScan();
+      function startScan(willConfig) {
+        document.getElementById('reader').innerHTML = ''
+        html5QrCode = new Html5Qrcode('reader')
+        if(willConfig) {
+          html5QrCode.start({ facingMode: "environment" }, config, scanToConfig)
+        } else {
+          html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+        }
+      }
+
+
+      document.addEventListener("DOMContentLoaded", main);
     </script>
   </body>
 </html>
