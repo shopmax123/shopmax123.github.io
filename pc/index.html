@@ -4,14 +4,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.0.3/html5-qrcode.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div class="columns is-desktop">
       <div class="column">
-        <section class="hero is-primary">
+        <section class="hero is-small is-danger">
           <div class="hero-body">
             <p class="title">
-              My QR Scanner
+              Chưa thiết lập Workstation
             </p>
           </div>
         </section>
@@ -19,6 +20,7 @@
       <div style="width: 320px; margin: 0 auto;" id="reader"></div>
       </div>
     </div>
+
     <script>
 
       function main() {
@@ -26,18 +28,39 @@
         let question = `Tồn tại thiết lập với WS = ${ws}. Bạn có muốn thiết lập lại không?`
 
         if(!ws) {
-          alert('Chưa có thiết lập Workstation, bấm OK để tiếp tục.');
+
+          document.querySelector('.hero').classList.remove('is-primary')
+          document.querySelector('.hero').classList.add('is-danger')
+
+          Swal.fire(
+            'Không tìm thấy thiết lập Workstation',
+            'Bấm ok sau đó quét QR của Workstation để lưu thiết lập',
+            'warning'
+          )
+
           startScan(true)
         } else {
-          // đi scan mã của Workstation để thiết lập
-          const answer = window.confirm(question);
-          if (answer) {
+
+          document.querySelector('.hero').classList.remove('is-danger')
+          document.querySelector('.hero').classList.add('is-primary')
+          document.querySelector('.title').innerText = ws
+
+          Swal.fire({
+            title: question,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: `Có, thiết lập lại`,
+            denyButtonText: `Không`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Swal.fire('Saved!', '', 'success')
               startScan(true)
-          }
-          else {
+            } else if (result.isDenied) {
+              Swal.fire('Thông báo','Bạn sẽ tiếp tục làm việc với thiết lập Workstation = ' + ws, 'info')
               document.querySelector('.title').innerText = ws
               startScan(false);
-          }
+            }
+          })
         }
       }
       
@@ -65,18 +88,14 @@
         html5QrCode.stop()
         localStorage.setItem('ws', message);
         document.querySelector('.title').innerText = localStorage.getItem('ws')
-        alert('Thiết lập thành công WS = ' + message)
+        Swal.fire('Thông báo','Thiết lập thành công Workstation = ' + message, 'info')
         window.location.reload(false); 
       }
 
       function startScan(willConfig) {
         document.getElementById('reader').innerHTML = ''
         html5QrCode = new Html5Qrcode('reader')
-        if(willConfig) {
-          html5QrCode.start({ facingMode: "environment" }, config, scanToConfig)
-        } else {
-          html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
-        }
+        html5QrCode.start({ facingMode: "environment" }, config, willConfig ? scanToConfig : qrCodeSuccessCallback)
       }
 
       document.addEventListener("DOMContentLoaded", main);
