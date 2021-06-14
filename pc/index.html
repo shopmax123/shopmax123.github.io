@@ -16,9 +16,9 @@
           </div>
         </section>
       </div>
-      <div class="column">
+      <!-- <div class="column">
         <input disabled="true" class="input is-primary input-ws is-fullwidth" type="text" placeholder="Work station">
-      </div>  
+      </div>   -->
       <div style="width: 320px; margin: 0 auto;" id="reader"></div>
       </div>
     </div>
@@ -37,13 +37,13 @@
               startScan(true)
           }
           else {
-              document.querySelector('.input-ws').value = ws
+              document.querySelector('.title').value = ws
               startScan(false);
           }
         }
       }
       
-      const API_URL = "<Thay API của bạn vào đây!!!>"
+      const API_URL = "https://script.google.com/macros/s/AKfycbxgkTfuc7uB7Ub4A3CCEtVs2CFL1VBZru2zfiZ-l6IYjo-DhXwfigatJQ6RCE5x2KWHDA/exec"
       let html5QrCode;
       const config = { fps: 20, qrbox: 250 }
 
@@ -66,7 +66,7 @@
       function scanToConfig(message) {
         html5QrCode.stop()
         localStorage.setItem('ws', message);
-        document.querySelector('.input-ws').value = localStorage.getItem('ws')
+        document.querySelector('.title').value = localStorage.getItem('ws')
         alert('Thiết lập thành công WS = ' + message)
         window.location.reload(false); 
       }
@@ -80,7 +80,6 @@
           html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
         }
       }
-
 
       document.addEventListener("DOMContentLoaded", main);
     </script>
