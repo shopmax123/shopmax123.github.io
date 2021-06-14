@@ -29,6 +29,7 @@
         let question = `Tồn tại thiết lập với WS = ${ws}. Bạn có muốn thiết lập lại không?`
 
         if(!ws) {
+          alert('Chưa có thiết lập Workstation, bấm OK để tiếp tục.');
           startScan(true)
         } else {
           // đi scan mã của Workstation để thiết lập
